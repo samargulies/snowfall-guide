@@ -36,6 +36,9 @@ export default {
   props: {
     msg: String,
   },
+  created() {
+    this.$store.dispatch('fetchForecast', { latitude: 39.975, longitude: -75.144 });
+  },
 };
 </script>
 

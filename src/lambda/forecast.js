@@ -1,10 +1,26 @@
-import axios from 'axios';
+const axios = require('axios');
 
-const apiUrl = `https://api.darksky.net/forecast/${process.env.DARK_SKY_KEY}/37.8267,-122.4233`;
+// export function handler(event, context, callback) {
+//   console.log(event);
+//   callback(null, {
+//     statusCode: 200,
+//     body: JSON.stringify(process.env.VUE_APP_DARK_SKY),
+//   });
 
-exports.handler = async (event, context) => axios.get(apiUrl)
-  .then(response => ({
-    statusCode: 200,
-    body: JSON.stringify(response.data),
-  }))
-  .catch(error => ({ statusCode: 422, body: String(error) }));
+
+exports.handler = (event, context, callback) => {
+  const { latitude, longitude, time } = event.queryStringParameters;
+  if (!latitude || !longitude || !time) {
+    callback(null, { statusCode: 422, body: 'Invalid request' });
+  }
+  const requestUrl = `https://api.darksky.net/forecast/${process.env.VUE_APP_DARK_SKY_KEY}/${latitude},${longitude},${time}`;
+
+  axios.get(requestUrl)
+    .then((response) => {
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify(response.data),
+      });
+    })
+    .catch((error) => { callback(null, { statusCode: 422, body: String(error) }); });
+};
