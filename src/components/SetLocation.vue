@@ -1,13 +1,13 @@
 <template>
   <div class="section">
-    <a @click="changeLocation = true">Change location</a>
-    <form v-if="changeLocation"
+    <a @click="toggleOpen">Change location</a>
+    <form v-if="open"
           @submit.prevent="setLocation"
           class="set-location">
       <input placeholder="latitude" v-model="latitude" />
       <input placeholder="longitude" v-model="longitude" />
       <input type="submit" value="Update"/>
-      <a @click="changeLocation = false">Cancel</a>
+      <button @click="toggleOpen">Cancel</button>
     </form>
   </div>
 </template>
@@ -17,26 +17,19 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
-      changeLocation: false,
       latitude: '',
       longitude: '',
     };
   },
   computed: {
-    ...mapState([
-      'location',
-    ]),
-    chartData() {
-      if (!this.hourlyForecast) {
-        return [];
-      }
-      return this.hourlyForecast.map(forecast => (forecast.precipAccumulation
-        ? forecast.precipAccumulation : 0));
-    },
+    ...mapState(['setLocationOpen']),
   },
   methods: {
     setLocation() {
       this.$store.dispatch('updateLocation', { latitude: this.latitude, longitude: this.longitude });
+    },
+    toggleOpen() {
+      this.$store.dispatch('setLocationOpen', !this.setLocationOpen);
     },
   },
 };

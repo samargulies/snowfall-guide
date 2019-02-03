@@ -16,6 +16,10 @@
           <div class="reading__label">Forecast today</div>
         </div>
       </div>
+       <div v-else class="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+      </div>
     </div>
     <SetLocation/>
     <StationReadings v-if="!loading"/>
@@ -61,6 +65,8 @@ export default {
     },
     locationError(error) {
       console.warn('location access denied', error);
+      this.$store.commit('setItem', { item: 'loading', value: false });
+      this.$store.dispatch('setLocationOpen', true);
     },
   },
   created() {

@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     loading: true,
+    setLocationOpen: false,
     location: {},
     forecasts: {},
     snowfallReadings: [],
@@ -114,7 +115,10 @@ export default new Vuex.Store({
         dispatch('fetchForecasts', { numDays: 2 }),
         dispatch('fetchSnowReadings', { type: 'snowfall' }),
         dispatch('fetchSnowReadings', { type: 'snowdepth' }),
-      ]).then(() => { commit('setItem', { item: 'loading', value: false }); });
+      ]).then(() => {
+        commit('setItem', { item: 'loading', value: false });
+        dispatch('setLocationOpen', false);
+      });
     },
     fetchForecasts({ dispatch }, { numDays = 2 }) {
       const days = Array(numDays).fill().map((_, i) => {
@@ -159,6 +163,9 @@ export default new Vuex.Store({
         }
         return readings;
       }).catch(error => console.warn(error));
+    },
+    setLocationOpen({ commit }, isOpen) {
+      commit('setItem', { item: 'setLocationOpen', value: isOpen });
     },
   },
   mutations: {
