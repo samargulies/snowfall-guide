@@ -1,28 +1,63 @@
 <template>
   <div class="main">
-    <h1>{{snowAccumulation}} inches of snow in the last 7 days</h1>
-    <h2>With {{snowAccumulationForecast}} inches of snow forecast for the rest of the day</h2>
-    <HourlyChart/>
+    <div class="section">
+      <h1 class="section__title">Snowfall Guide</h1>
+      <div v-if="!loading" class="topline-readings">
+        <div class="reading">
+          <div class="reading__value">{{snowDepth | roundToDecimals(1)}} in</div>
+          <div class="reading__label">Snow depth</div>
+        </div>
+        <div class="reading main-reading">
+          <div class="reading__value">{{snowAccumulation | roundToDecimals(1)}} in</div>
+          <div class="reading__label">In the last 24 hours</div>
+        </div>
+        <div class="reading">
+          <div class="reading__value">{{snowForecast | roundToDecimals(0)}} in</div>
+          <div class="reading__label">Forecast today</div>
+        </div>
+      </div>
+    </div>
+    <SetLocation/>
+    <StationReadings v-if="!loading"/>
+    <div class="section section--about">
+      <h2 class="section__title">What is this?</h2>
+      <!-- eslint-disable-next-line max-len -->
+      <p>I built snowfall guide because after a snow storm is forecast I always wonder what the actual snow totals are near me. This site uses a combination of NOAA station readings in the U.S. and Dark Sky for forecasts and snowfall estimates. I hope you enjoy viewing the snow accumulation, snow depth, and snowfall for your recent winter storms.</p>
+    </div>
   </div>
 </template>
 
 <script>
-import HourlyChart from '@/components/HourlyChart.vue';
-import { mapGetters } from 'vuex';
+import '@/assets/css/style.scss';
+import { mapGetters, mapState } from 'vuex';
+import { roundToDecimals } from '@/filters';
+import SetLocation from './SetLocation.vue';
+import StationReadings from './StationReadings.vue';
 
 export default {
-  components: { HourlyChart },
+  components: { SetLocation, StationReadings },
+  filters: {
+    roundToDecimals,
+  },
   computed: {
     ...mapGetters([
+      'snowDepth',
       'snowAccumulation',
-      'snowAccumulationForecast',
+      'snowForecast',
+      'hourlyForecast',
     ]),
+    ...mapState(['loading']),
+    chartData() {
+      if (!this.hourlyForecast) {
+        return [];
+      }
+      return this.hourlyForecast.map(forecast => (forecast.precipAccumulation
+        ? forecast.precipAccumulation : 0));
+    },
   },
   methods: {
     locationResponse(location) {
-      this.$store.dispatch('updateLocation', location.coords)
-        .then(() => this.$store.dispatch('fetchForecasts', { numDays: 7 }))
-        .then(forecasts => console.log(forecasts));
+      this.$store.dispatch('updateLocation', location.coords);
     },
     locationError(error) {
       console.warn('location access denied', error);
