@@ -81,7 +81,7 @@ export default {
     },
     updateLocation() {
       const title = parseUrlLocation(this.title);
-      document.title = document.title.replace(/.*Snowfall Guide/, `${title} Snowfall Guide`);
+      document.title = document.title.replace(/.*Snowfall Guide/, `${title || ''} Snowfall Guide`);
       this.$store.dispatch('updateLocation', {
         latitude: parseFloat(this.latitude),
         longitude: parseFloat(this.longitude),
