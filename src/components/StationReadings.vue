@@ -1,7 +1,7 @@
 <template>
     <div class="section">
       <h1 class="section__title">Nearby Station Readings</h1>
-      <div v-if="snowfallAndDepthReadings" class="station-readings">
+      <div v-if="snowfallAndDepthReadings.length > 0" class="station-readings">
         <div class="station-reading"
               v-for="reading in snowfallAndDepthReadings"
               :key="reading.Station_Id">
