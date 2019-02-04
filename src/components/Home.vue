@@ -26,7 +26,9 @@
     <div class="section section--about">
       <h2 class="section__title">What is this?</h2>
       <!-- eslint-disable-next-line max-len -->
-      <p>I built snowfall guide because after a snow storm is forecast I always wonder what the actual snow totals are near me. This site uses a combination of NOAA station readings in the U.S. and Dark Sky for forecasts and snowfall estimates. I hope you enjoy viewing the snow accumulation, snow depth, and snowfall for your recent winter storms.</p>
+      <p>I built snowfall guide because after a snow storm is forecast I always wonder what the actual snow totals are near me. I hope you enjoy viewing the snow accumulation, snow depth, and snowfall for your recent winter storms.</p>
+      <p><a href="https://darksky.net/poweredby/">Powered by Dark Sky</a> and the <a href="https://www.nohrsc.noaa.gov">National Weather Service NOHRSC</a>.</p>
+      <p>Brought to you by <a href="https://belabor.org">belabor.org</a>.</p>
     </div>
   </div>
 </template>
@@ -34,12 +36,18 @@
 <script>
 import '@/assets/css/style.scss';
 import { mapGetters, mapState } from 'vuex';
+import { parseUrlLocation } from '@/helpers';
 import { roundToDecimals } from '@/filters';
 import SetLocation from './SetLocation.vue';
 import StationReadings from './StationReadings.vue';
 
 export default {
   components: { SetLocation, StationReadings },
+  props: {
+    title: { type: String },
+    latitude: { type: String },
+    longitude: { type: String },
+  },
   filters: {
     roundToDecimals,
   },
@@ -60,8 +68,28 @@ export default {
     },
   },
   methods: {
-    locationResponse(location) {
-      this.$store.dispatch('updateLocation', location.coords);
+    getLocation() {
+      navigator.geolocation.getCurrentPosition(
+        this.routeLocation,
+        this.locationError,
+        { enableHighAccuracy: true },
+      );
+    },
+    routeLocation(location) {
+      this.$router.push({
+        name: 'location',
+        params: {
+          latitude: `${location.coords.latitude}`,
+          longitude: `${location.coords.longitude}`,
+        },
+      });
+    },
+    updateLocation() {
+      this.$store.dispatch('updateLocation', {
+        latitude: parseFloat(this.latitude),
+        longitude: parseFloat(this.longitude),
+        title: parseUrlLocation(this.title),
+      });
     },
     locationError(error) {
       console.warn('location access denied', error);
@@ -70,11 +98,16 @@ export default {
     },
   },
   created() {
-    navigator.geolocation.getCurrentPosition(
-      this.locationResponse,
-      this.locationError,
-      { enableHighAccuracy: true },
-    );
+    if (this.latitude && this.longitude) {
+      this.updateLocation();
+    } else {
+      this.getLocation();
+    }
+  },
+  watch: {
+    longitude() {
+      this.updateLocation();
+    },
   },
 };
 </script>

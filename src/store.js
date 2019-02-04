@@ -84,7 +84,8 @@ export default new Vuex.Store({
     snowfallAndDepthReadings(state) {
       const snowfallStations = state.snowfallReadings.map(reading => reading.Station_Id);
       const snowDepthStations = state.snowDepthReadings.map(reading => reading.Station_Id);
-      const stationIds = [...snowDepthStations, ...snowfallStations];
+      // get a list of unique station ids
+      const stationIds = [...new Set([...snowDepthStations, ...snowfallStations])];
       const allReadings = [...state.snowfallReadings, ...state.snowDepthReadings];
 
       const readings = stationIds.map((stationId) => {
@@ -99,14 +100,14 @@ export default new Vuex.Store({
           snowDepth,
           snowfall,
         };
-      });
+      }).sort((a, b) => a.distanceToStation - b.distanceToStation);
 
-      return readings.sort((a, b) => a.distanceToStation - b.distanceToStation);
+      return readings;
     },
   },
   actions: {
-    updateLocation({ dispatch, commit }, { latitude, longitude }) {
-      commit('setItem', { item: 'location', value: { latitude, longitude } });
+    updateLocation({ dispatch, commit }, { latitude, longitude, title = '' }) {
+      commit('setItem', { item: 'location', value: { latitude, longitude, title } });
       commit('setItem', { item: 'snowfallReadings', value: [] });
       commit('setItem', { item: 'snowDepthReadings', value: [] });
       commit('setItem', { item: 'forecasts', value: {} });

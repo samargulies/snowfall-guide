@@ -4,6 +4,7 @@ const { point, distance, bearing } = require('@turf/turf');
 const { getDay, getMonth } = require('../helpers');
 
 // return readings within this many miles
+const noaaUrl = process.env.VUE_APP_NOAA_CDN_URL;
 const distanceThreshold = 30;
 
 exports.handler = (event, context, callback) => {
@@ -22,7 +23,7 @@ exports.handler = (event, context, callback) => {
   const location = point([longitude, latitude]);
   const yearMonth = `${now.getFullYear()}${getMonth(now)}`;
   const day = getDay(now);
-  const url = `https://www.nohrsc.noaa.gov/nsa/discussions_text/National/${type}/${yearMonth}/${type}_${yearMonth}${day}18_e.txt`;
+  const url = `${noaaUrl}/${type}/${yearMonth}/${type}_${yearMonth}${day}18_e.txt`;
 
   axios.get(url, { responseType: 'text' })
     .then((response) => {

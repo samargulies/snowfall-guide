@@ -16,3 +16,10 @@ export function getMonth(date) {
 export function round(value, decimals) {
   return Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`);
 }
+
+export function parseUrlLocation(text) {
+  if (!text) {
+    return text;
+  }
+  return text.replace('--', ', ').replace('-', ' ');
+}

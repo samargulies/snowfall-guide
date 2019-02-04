@@ -9,6 +9,12 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/location/:latitude,:longitude/:title?',
+      name: 'location',
+      component: Home,
+      props: true,
+    },
+    {
       path: '/',
       name: 'home',
       component: Home,

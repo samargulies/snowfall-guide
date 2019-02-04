@@ -1,7 +1,8 @@
 <template>
   <div class="section">
+    <div v-if="location.title" class="location-name">{{location.title}}</div>
     <a @click="toggleOpen">Change location</a>
-    <form v-if="open"
+    <form v-if="setLocationOpen"
           @submit.prevent="setLocation"
           class="set-location">
       <input placeholder="latitude" v-model="latitude" />
@@ -22,11 +23,17 @@ export default {
     };
   },
   computed: {
-    ...mapState(['setLocationOpen']),
+    ...mapState(['setLocationOpen', 'location']),
   },
   methods: {
     setLocation() {
-      this.$store.dispatch('updateLocation', { latitude: this.latitude, longitude: this.longitude });
+      this.$router.push({
+        name: 'location',
+        params: {
+          latitude: this.latitude,
+          longitude: this.longitude,
+        },
+      });
     },
     toggleOpen() {
       this.$store.dispatch('setLocationOpen', !this.setLocationOpen);
