@@ -114,8 +114,7 @@ export default new Vuex.Store({
       commit('setItem', { item: 'loading', value: true });
       return Promise.all([
         dispatch('fetchForecasts', { numDays: 2 }),
-        dispatch('fetchSnowReadings', { type: 'snowfall' }),
-        dispatch('fetchSnowReadings', { type: 'snowdepth' }),
+        dispatch('fetchSnowReadings', { num: 1 }),
       ]).then(() => {
         commit('setItem', { item: 'loading', value: false });
         dispatch('setLocationOpen', false);
@@ -144,7 +143,17 @@ export default new Vuex.Store({
         return forecast;
       }).catch(error => console.warn(error));
     },
-    fetchSnowReadings({ state, commit }, { type = 'snowfall' }) {
+    fetchSnowReadings({ dispatch }, { num = 1 }) {
+      const days = Array(num).fill().map((_, i) => {
+        const today = new Date();
+        return new Date().setHours(today.getDate() + i);
+      });
+      return Promise.all(days.map(time => Promise.all([
+        dispatch('fetchSnowReading', { type: 'snowfall', time }),
+        dispatch('fetchSnowReading', { type: 'snowdepth', time }),
+      ])));
+    },
+    fetchSnowReading({ state, commit }, { type = 'snowfall', time }) {
       const url = '/.netlify/functions/snowReadings/';
       return axios({
         url,
@@ -153,6 +162,7 @@ export default new Vuex.Store({
           latitude: state.location.latitude,
           longitude: state.location.longitude,
           type,
+          time,
         },
       }).then((response) => {
         const readings = response.data;
