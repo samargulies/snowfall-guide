@@ -23,13 +23,7 @@
     </div>
     <SetLocation/>
     <StationReadings v-if="!loading"/>
-    <div class="section section--about">
-      <h2 class="section__title">What is this?</h2>
-      <!-- eslint-disable-next-line max-len -->
-      <p>I built snowfall guide because after a snow storm is forecast I always wonder what the actual snow totals are near me. I hope you enjoy viewing the snow accumulation, snow depth, and snowfall for your recent winter storms.</p>
-      <p><a href="https://darksky.net/poweredby/">Powered by Dark Sky</a> and the <a href="https://www.nohrsc.noaa.gov">National Weather Service NOHRSC</a>.</p>
-      <p>Brought to you by <a href="https://belabor.org">belabor.org</a>.</p>
-    </div>
+    <TheFooter/>
   </div>
 </template>
 
@@ -40,9 +34,10 @@ import { parseUrlLocation } from '@/helpers';
 import { roundToDecimals } from '@/filters';
 import SetLocation from './SetLocation.vue';
 import StationReadings from './StationReadings.vue';
+import TheFooter from './TheFooter.vue';
 
 export default {
-  components: { SetLocation, StationReadings },
+  components: { SetLocation, StationReadings, TheFooter },
   props: {
     title: { type: String },
     latitude: { type: String },
@@ -85,10 +80,12 @@ export default {
       });
     },
     updateLocation() {
+      const title = parseUrlLocation(this.title);
+      document.title = document.title.replace(/.*Snowfall Guide/, `${title} Snowfall Guide`);
       this.$store.dispatch('updateLocation', {
         latitude: parseFloat(this.latitude),
         longitude: parseFloat(this.longitude),
-        title: parseUrlLocation(this.title),
+        title,
       });
     },
     locationError(error) {

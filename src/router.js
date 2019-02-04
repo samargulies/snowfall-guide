@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/components/Home.vue';
 
+const Atlas = () => import('@/components/Atlas.vue');
+
 Vue.use(Router);
 
 export default new Router({
@@ -13,6 +15,11 @@ export default new Router({
       name: 'location',
       component: Home,
       props: true,
+    },
+    {
+      path: '/atlas',
+      name: 'atlas',
+      component: Atlas,
     },
     {
       path: '/',

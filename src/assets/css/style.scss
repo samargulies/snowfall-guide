@@ -43,7 +43,8 @@ a {
     &--about {
         max-width: 400px;
         color: var(--dark-grey);
-        margin: 0 auto;
+        margin-left: auto;
+        margin-right: auto;
 
         a {
             border: none;
@@ -52,6 +53,25 @@ a {
     &--about &__title {
         font-size: 1rem;
         color: var(--dark-grey);
+    }
+
+    &--atlas {
+        .city {
+            display: inline-block;
+            padding: 0 0.25em;
+            line-height: 1.4;
+        }
+    }
+
+    &--navigation {
+        nav ul {
+            list-style: none;
+        }
+        
+        nav li {
+            display: inline;
+            padding: 0 0.25em;
+        }
     }
 }
 .topline-readings {
