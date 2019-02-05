@@ -111,12 +111,12 @@ export default new Vuex.Store({
       commit('setItem', { item: 'snowfallReadings', value: [] });
       commit('setItem', { item: 'snowDepthReadings', value: [] });
       commit('setItem', { item: 'forecasts', value: {} });
-      commit('setItem', { item: 'loading', value: true });
+      dispatch('setLoading', true);
       return Promise.all([
         dispatch('fetchForecasts', { numDays: 2 }),
         dispatch('fetchSnowReadings', { num: 1 }),
       ]).then(() => {
-        commit('setItem', { item: 'loading', value: false });
+        dispatch('setLoading', false);
         dispatch('setLocationOpen', false);
       });
     },
@@ -177,6 +177,9 @@ export default new Vuex.Store({
     },
     setLocationOpen({ commit }, isOpen) {
       commit('setItem', { item: 'setLocationOpen', value: isOpen });
+    },
+    setLoading({ commit }, isLoading) {
+      commit('setItem', { item: 'loading', value: isLoading });
     },
   },
   mutations: {
