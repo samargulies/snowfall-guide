@@ -1,7 +1,7 @@
 const axios = require('axios');
 const csv = require('csvtojson');
 const { point, distance, bearing } = require('@turf/turf');
-const { getDay, getMonth, closestReadingHour } = require('../helpers');
+const { getDay, getMonth } = require('../helpers');
 
 // return readings within this many miles
 const noaaUrl = process.env.VUE_APP_NOAA_CDN_URL;

@@ -23,9 +23,16 @@ export function round(value, decimals) {
   return Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`);
 }
 
-export function parseUrlLocation(text) {
+export function parseUrlTitle(text) {
   if (!text) {
     return text;
   }
-  return text.replace('--', ', ').replace('-', ' ');
+  return text.replace(/--/g, ', ').replace(/-/g, ' ');
+}
+
+export function encodeUrlTitle(text) {
+  if (!text) {
+    return text;
+  }
+  return text.replace(/, /g, '--').replace(/\W/g, '-');
 }

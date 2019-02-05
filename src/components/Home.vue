@@ -30,7 +30,7 @@
 <script>
 import '@/assets/css/style.scss';
 import { mapGetters, mapState } from 'vuex';
-import { parseUrlLocation } from '@/helpers';
+import { parseUrlTitle } from '@/helpers';
 import { roundToDecimals } from '@/filters';
 import SetLocation from './SetLocation.vue';
 import StationReadings from './StationReadings.vue';
@@ -80,7 +80,7 @@ export default {
       });
     },
     updateLocation() {
-      const title = parseUrlLocation(this.title);
+      const title = parseUrlTitle(this.title);
       document.title = document.title.replace(/.*Snowfall Guide/, `${title || ''} Snowfall Guide`);
       this.$store.dispatch('updateLocation', {
         latitude: parseFloat(this.latitude),

@@ -25,6 +25,7 @@
 import '@/assets/css/style.scss';
 import TheFooter from './TheFooter.vue';
 import cities from '@/data/cities.json';
+import { parseUrlTitle } from '@/helpers';
 
 export default {
   components: { TheFooter },
@@ -43,7 +44,7 @@ export default {
       return this.cities.filter(city => city.state === state).sort();
     },
     cityNameUrl(city) {
-      return `${city.city}--${city.state}`.replace(/\W/g, '-');
+      return parseUrlTitle(`${city.city}, ${city.state}`);
     },
   },
 };
