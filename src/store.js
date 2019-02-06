@@ -31,7 +31,8 @@ export default new Vuex.Store({
     },
     snowAccumulation(state, getters) {
       const darkSkyAccumulation = getters.snowAccumulationDarkSky;
-      const closestReading = state.snowfallReadings[0];
+      const closestReading = state.snowfallReadings
+        .sort((a, b) => a.distanceToStation - b.distanceToStation)[0];
       if (closestReading && (closestReading.distanceToStation < 20 || darkSkyAccumulation === 0)) {
         return closestReading.Amount;
       }
