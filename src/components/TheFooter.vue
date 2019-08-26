@@ -12,6 +12,9 @@
       <ul>
         <li><router-link to="/">Home</router-link></li>
         <li><router-link to="/atlas">Atlas</router-link></li>
+        <li><a href="https://www.whatismyelevation.com/">What is my elevation?</a></li>
+        <li><a href="http://howfastamigoing.org">How fast am I going?</a></li>
+        <li><a href="http://visited.earth/">Visited Earth</a></li>
       </ul>
     </nav>
   </div>
