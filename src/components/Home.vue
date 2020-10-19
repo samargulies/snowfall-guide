@@ -1,28 +1,30 @@
 <template>
-  <div class="main">
-    <div class="section">
-      <h1 class="section__title">Snowfall Guide</h1>
-      <div v-if="!loading" class="topline-readings">
-        <div class="reading">
-          <div class="reading__value">{{snowDepth | roundToDecimals(1)}} in</div>
-          <div class="reading__label">Snow depth</div>
+  <div class="page">
+    <div class="main">
+      <div class="section">
+        <h1 class="section__title">Snow Totals</h1>
+        <div v-if="!loading" class="topline-readings">
+          <div class="reading">
+            <div class="reading__value">{{snowDepth | roundToDecimals(1)}} in</div>
+            <div class="reading__label">Snow depth</div>
+          </div>
+          <div class="reading main-reading">
+            <div class="reading__value">{{snowAccumulation | roundToDecimals(1)}} in</div>
+            <div class="reading__label">In the last 24 hours</div>
+          </div>
+          <div class="reading">
+            <div class="reading__value">{{snowForecast | roundToDecimals(0)}} in</div>
+            <div class="reading__label">Forecast today</div>
+          </div>
         </div>
-        <div class="reading main-reading">
-          <div class="reading__value">{{snowAccumulation | roundToDecimals(1)}} in</div>
-          <div class="reading__label">In the last 24 hours</div>
-        </div>
-        <div class="reading">
-          <div class="reading__value">{{snowForecast | roundToDecimals(0)}} in</div>
-          <div class="reading__label">Forecast today</div>
+        <div v-else class="spinner">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
         </div>
       </div>
-      <div v-else class="spinner">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-      </div>
+      <SetLocation/>
+      <StationReadings v-if="!loading"/>
     </div>
-    <SetLocation/>
-    <StationReadings v-if="!loading"/>
     <TheFooter/>
   </div>
 </template>
