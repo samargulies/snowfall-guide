@@ -17,6 +17,12 @@
 # For context-specific rules, use _headers or _redirects files, which are 
 # PER-DEPLOY.
 
+[[redirects]]
+  from = "https://snowfall.guide/*"
+  to = "https://snowtotals.org/:splat"
+  status = 301
+  force = true
+
 # Netlify settings for single-page application
 [[redirects]]
   from = "/*"
