@@ -144,10 +144,10 @@ export default new Vuex.Store({
         return forecast;
       }).catch(error => console.warn(error));
     },
-    fetchSnowReadings({ dispatch }, { num = 1 }) {
-      const days = Array(num).fill().map((_, i) => {
+    fetchSnowReadings({ dispatch }, { numDays = 1 }) {
+      const days = Array(numDays).fill().map((_, i) => {
         const today = new Date();
-        return new Date().setHours(today.getDate() + i);
+        return new Date().setDate(today.getDate() - i);
       });
       return Promise.all(days.map(time => Promise.all([
         dispatch('fetchSnowReading', { type: 'snowfall', time }),

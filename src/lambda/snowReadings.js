@@ -1,7 +1,7 @@
 const axios = require('axios');
 const csv = require('csvtojson');
 const { point, distance, bearing } = require('@turf/turf');
-const { getDay, getMonth } = require('../helpers');
+const { getDay, getMonth, closestReadingHour } = require('../helpers');
 
 // return readings within this many miles
 const noaaUrl = process.env.VUE_APP_NOAA_CDN_URL;
@@ -21,10 +21,10 @@ exports.handler = (event, context, callback) => {
   }
 
   const location = point([longitude, latitude]);
-  const yearMonth = `${now.getFullYear()}${getMonth(now)}`;
+  const yearMonth = `${now.getUTCFullYear()}${getMonth(now)}`;
   const day = getDay(now);
-  // const hour = closestReadingHour(now);
-  const url = `${noaaUrl}/${type}/${yearMonth}/${type}_${yearMonth}${day}18_e.txt`;
+  const hour = closestReadingHour(now);
+  const url = `${noaaUrl}/${type}/${yearMonth}/${type}_${yearMonth}${day}${hour}_e.txt`;
 
   axios.get(url, { responseType: 'text' })
     .then((response) => {

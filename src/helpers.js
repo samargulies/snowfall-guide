@@ -6,15 +6,15 @@ export function toTitleCase(text) {
 }
 
 export function getDay(date) {
-  return `0${date.getDate()}`.slice(-2);
+  return `0${date.getUTCDate()}`.slice(-2);
 }
 
 export function getMonth(date) {
-  return `0${date.getMonth() + 1}`.slice(-2);
+  return `0${date.getUTCMonth() + 1}`.slice(-2);
 }
 
 export function closestReadingHour(date) {
-  let hour = Math.floor(date.getHours() / 6) * 6;
+  let hour = Math.floor(date.getUTCHours() / 6) * 6;
   if (hour >= 24) { hour = 0; }
   return `0${hour}`.slice(-2);
 }
