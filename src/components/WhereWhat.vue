@@ -18,7 +18,7 @@
         </a>
       </div>
       <div class="site site--address" v-if="address">
-        <a href="https://whatismyaddress.org/">
+        <a href="https://whatismyelevation.com/what-is-my-address">
           <h2>
             <span class="highlight">What</span> is my address?
           </h2>

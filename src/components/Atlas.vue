@@ -23,9 +23,9 @@
 
 <script>
 import '@/assets/css/style.scss';
-import TheFooter from './TheFooter.vue';
 import cities from '@/data/cities.json';
 import { parseUrlTitle } from '@/helpers';
+import TheFooter from './TheFooter.vue';
 
 export default {
   components: { TheFooter },
@@ -36,12 +36,12 @@ export default {
   },
   computed: {
     states() {
-      return [...new Set(this.cities.map(city => city.state))].sort();
+      return [...new Set(this.cities.map((city) => city.state))].sort();
     },
   },
   methods: {
     citiesByState(state) {
-      return this.cities.filter(city => city.state === state).sort();
+      return this.cities.filter((city) => city.state === state).sort();
     },
     cityNameUrl(city) {
       return parseUrlTitle(`${city.city}, ${city.state}`);

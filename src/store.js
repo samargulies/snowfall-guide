@@ -83,16 +83,16 @@ export default new Vuex.Store({
       return accumulation;
     },
     snowfallAndDepthReadings(state) {
-      const snowfallStations = state.snowfallReadings.map(reading => reading.Station_Id);
-      const snowDepthStations = state.snowDepthReadings.map(reading => reading.Station_Id);
+      const snowfallStations = state.snowfallReadings.map((reading) => reading.Station_Id);
+      const snowDepthStations = state.snowDepthReadings.map((reading) => reading.Station_Id);
       // get a list of unique station ids
       const stationIds = [...new Set([...snowDepthStations, ...snowfallStations])];
       const allReadings = [...state.snowfallReadings, ...state.snowDepthReadings];
 
       const readings = stationIds.map((stationId) => {
-        const snowDepth = state.snowDepthReadings.find(depth => depth.Station_Id === stationId);
-        const snowfall = state.snowfallReadings.find(fall => fall.Station_Id === stationId);
-        const stationData = allReadings.find(reading => reading.Station_Id === stationId);
+        const snowDepth = state.snowDepthReadings.find((depth) => depth.Station_Id === stationId);
+        const snowfall = state.snowfallReadings.find((fall) => fall.Station_Id === stationId);
+        const stationData = allReadings.find((reading) => reading.Station_Id === stationId);
         return {
           Station_Id: stationId,
           Name: stationData.Name,
@@ -126,7 +126,7 @@ export default new Vuex.Store({
         const today = new Date();
         return new Date().setDate(today.getDate() - i);
       });
-      return Promise.all(days.map(date => dispatch('fetchForecast', { date })));
+      return Promise.all(days.map((date) => dispatch('fetchForecast', { date })));
     },
     fetchForecast({ state, commit }, { date }) {
       const url = '/.netlify/functions/forecast/';
@@ -142,14 +142,14 @@ export default new Vuex.Store({
         const forecast = response.data;
         commit('setForecast', { date, forecast });
         return forecast;
-      }).catch(error => console.warn(error));
+      }).catch((error) => console.warn(error));
     },
     fetchSnowReadings({ dispatch }, { numDays = 1 }) {
       const days = Array(numDays).fill().map((_, i) => {
         const today = new Date();
         return new Date().setDate(today.getDate() - i);
       });
-      return Promise.all(days.map(time => Promise.all([
+      return Promise.all(days.map((time) => Promise.all([
         dispatch('fetchSnowReading', { type: 'snowfall', time }),
         dispatch('fetchSnowReading', { type: 'snowdepth', time }),
       ])));
@@ -174,7 +174,7 @@ export default new Vuex.Store({
           commit('setItem', { item: 'snowDepthReadings', value: readings });
         }
         return readings;
-      }).catch(error => console.warn(error));
+      }).catch((error) => console.warn(error));
     },
     setLocationOpen({ commit }, isOpen) {
       commit('setItem', { item: 'setLocationOpen', value: isOpen });

@@ -60,7 +60,7 @@ export default {
       if (!this.hourlyForecast) {
         return [];
       }
-      return this.hourlyForecast.map(forecast => (forecast.precipAccumulation
+      return this.hourlyForecast.map((forecast) => (forecast.precipAccumulation
         ? forecast.precipAccumulation : 0));
     },
   },

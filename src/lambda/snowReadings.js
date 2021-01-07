@@ -30,11 +30,11 @@ exports.handler = (event, context, callback) => {
     .then((response) => {
       const text = response.data.replace('! THESE DATA ARE UNOFFICIAL AND PROVISIONAL\n', '');
       return csv({ delimiter: '|' }).fromString(text)
-        .subscribe(json => new Promise((resolve) => {
+        .subscribe((json) => new Promise((resolve) => {
           resolve(json);
         }));
     })
-    .then(readings => readings.reduce((nearbyReadings, reading) => {
+    .then((readings) => readings.reduce((nearbyReadings, reading) => {
       const readingPoint = point([reading.Longitude, reading.Latitude]);
       const distanceToStation = distance(location, readingPoint, { units: 'miles' });
       if (distanceToStation < distanceThreshold) {
@@ -43,8 +43,8 @@ exports.handler = (event, context, callback) => {
       }
       return nearbyReadings;
     }, []))
-    .then(readings => readings.sort((a, b) => a.distanceToReading - b.distanceToReading))
-    .then(reading => reading.slice(0, 4))
+    .then((readings) => readings.sort((a, b) => a.distanceToReading - b.distanceToReading))
+    .then((reading) => reading.slice(0, 4))
     .then((data) => {
       callback(null, {
         statusCode: 200,
