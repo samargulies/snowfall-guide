@@ -23,8 +23,8 @@ exports.handler = (event, context, callback) => {
   const location = point([longitude, latitude]);
   const yearMonth = `${now.getUTCFullYear()}${getMonth(now)}`;
   const day = getDay(now);
-  const hour = closestReadingHour(now);
-  const url = `${noaaUrl}/${type}/${yearMonth}/${type}_${yearMonth}${day}${hour}_e.txt`;
+  // const hour = closestReadingHour(now);
+  const url = `${noaaUrl}/${type}/${yearMonth}/${type}_${yearMonth}${day}06_e.txt`;
 
   axios.get(url, { responseType: 'text' })
     .then((response) => {

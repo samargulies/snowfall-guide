@@ -11,6 +11,8 @@
     "@turf/turf": "^5.1.6",
     "axios": "^0.21.1",
     "csvtojson": "^2.0.10",
+    "jsonp": "^0.2.1",
+    "v-autocomplete": "^1.8.2",
     "vue": "^2.6.12",
     "vue-google-autocomplete": "^1.1.0",
     "vue-router": "^3.4.9",
